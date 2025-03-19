@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id       String @id @default(uuid()) @map("_id")
+  userId   String @unique
+  name     String
+  imageUrl String
+  email    String
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  server   Server[]
+  members  Member[]
+  channels Channel[]
+}
+
+model Server {
+  id         String @id @default(uuid()) @map("_id")
+  name       String
+  imageUrl   String
+  inviteCode String
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  members  Member[]
+  channels Channel[]
+
+  @@index([profileId])
+}
+
+enum MemberRole {
+  SERVEROWNER //ADMIN
+  VICESERVEROWNER //MODERATOR
+  GUEST
+}
+
+model Member {
+  id   String     @id @default(uuid()) @map("_id")
+  role MemberRole @default(GUEST)
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([serverId])
+}
+
+model Channel {
+  id   String @id @default(uuid()) @map("_id")
+  name String
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  serverId String
+  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@index([profileId])
+  @@index([serverId])
+}

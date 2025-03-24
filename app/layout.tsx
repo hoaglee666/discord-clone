@@ -4,8 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
-import { NavigationSidebar } from "@/components/navigation/navigation-sidebar";
-import { ModalProviderWrapper } from "@/components/providers/modal-provider-wrapper";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,15 +42,8 @@ export default function RootLayout({
             enableSystem
             storageKey="discord-cua-bo-may-theme"
           >
-            <ModalProviderWrapper />
-
-            {/* Flex wrapper */}
-            <div className="flex h-screen overflow-hidden">
-              <NavigationSidebar />
-              <div className="flex-1 overflow-y-auto">
-                {children}
-              </div>
-            </div>
+            <ModalProvider />
+            {children}
           </ThemeProvider>
         </body>
       </html>

@@ -4,18 +4,18 @@ import Image from "next/image";
 import { useParams, useRouter} from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { ActionTooltip } from "../ui/action-tooltip";
+import { ActionTooltip } from "../action-tooltip";
 
 interface NavigationItemProps {
-    name: string;
-    imageUrl: string;
     id: string;
+    imageUrl: string;
+    name: string
 };
 
 export const NavigationItem = ({
-    name,
-    imageUrl,
-    id 
+    id,
+    imageUrl, 
+    name 
 }: NavigationItemProps) => {
     const params = useParams();
     const router = useRouter();

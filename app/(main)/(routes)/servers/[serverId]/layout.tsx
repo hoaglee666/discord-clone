@@ -30,7 +30,7 @@ const ServerIdLayout = async ({
 
   if (!server) {
     // Redirect to setup if no server exists
-    return redirect("/setup");
+    return redirect("/"); // /setup
   }
 
   return (

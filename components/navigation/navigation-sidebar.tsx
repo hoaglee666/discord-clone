@@ -30,12 +30,12 @@ export const NavigationSidebar = async () =>  {
 
     return (
         <div
-            className="fixed left-0 top-0 h-full text-primary w-[72px] 
-                dark:bg-[#1b1c2a] py-3 space-y-4 
-                flex flex-col items-center z-50"
+            className="fixed left-0 top-0 h-full w-[72px] text-primary
+                bg-background dark:bg-[#1b1c2a] py-3 space-y-4 
+                flex flex-col items-center"
         >
             <NavigationAction />
-            <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md"/>
+            <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md mx-auto"/>
             <ScrollArea className="flex-1 w-full">
                 {servers.map((server) => (
                     <div key={server.id} className="mb-4">
@@ -50,14 +50,12 @@ export const NavigationSidebar = async () =>  {
             <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
                 <ModeToggle />
                 <UserButton 
-                    afterSignOutUrl="/"
                     appearance={{
                         elements: {
                             avatarBox: "h-[48px] w-[48px]"
                         }
                     }}
                 />
-
             </div>
         </div>
     );

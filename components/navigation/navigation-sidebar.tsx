@@ -1,4 +1,4 @@
-import { currentProfile } from "@/lib/crurrent-profile"
+import { currentProfile } from "@/lib/current-profile"
 import { redirect } from "next/navigation"
 
 import { db } from "@/lib/db"
@@ -30,9 +30,9 @@ export const NavigationSidebar = async () =>  {
 
     return (
         <div
-            className="h-full text-primary w-[72px] 
-            dark:bg-[#1b1c2a] py-3 space-y-4 
-            flex flex-col items-center"
+            className="fixed left-0 top-0 h-full text-primary w-[72px] 
+                dark:bg-[#1b1c2a] py-3 space-y-4 
+                flex flex-col items-center z-50"
         >
             <NavigationAction />
             <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md"/>

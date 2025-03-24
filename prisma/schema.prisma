@@ -5,13 +5,15 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
+
 
 model Profile {
   id       String @id @default(uuid()) @map("_id")
   userId   String @unique
   name     String
-  imageUrl String
+  imageUrl String 
   email    String
 
   createAt DateTime @default(now())
@@ -26,7 +28,7 @@ model Server {
   id         String @id @default(uuid()) @map("_id")
   name       String
   imageUrl   String
-  inviteCode String
+  inviteCode String @unique
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -74,7 +76,7 @@ model Channel {
   name String
   
   // ADDED THIS FIELD 👇
-  type ChannelType
+  type ChannelType @default(TEXT)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)

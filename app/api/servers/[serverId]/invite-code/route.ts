@@ -9,7 +9,6 @@ export async function PATCH(
 ) {
   try {
     const profile = await currentProfile();
-    console.log("[ServerIdLayout] Current profile:", profile);
 
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });

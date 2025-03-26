@@ -56,6 +56,7 @@ export const ServerHeader = ({
                     )} 
                     {isServerOwner && (
                         <DropdownMenuItem
+                            onClick ={() => onOpen("editServer", { server })}
                             className="px-3 py-2 text-sm cursor-pointer
                             hover:bg-gray-100 dark:hover:bg-zinc-700 
                             transition rounded-md flex items-center"
@@ -66,6 +67,7 @@ export const ServerHeader = ({
                     )} 
                     {isServerOwner && (
                         <DropdownMenuItem
+                            onClick={() => onOpen("members", {server})}
                             className="px-3 py-2 text-sm cursor-pointer
                             hover:bg-gray-100 dark:hover:bg-zinc-700 
                             transition rounded-md flex items-center"

@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Open_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,20 +23,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={
-          cn(geistSans.variable, geistMono.variable,
-          "bg-white dark:bg-[#313338] text-black dark:text-white")
-        }>
-          <ThemeProvider attribute={"class"} defaultTheme="dark"
-            enableSystem={true}
-            storageKey="discord-cua-bo-may-theme">
-              {children}
+        <body
+          className={cn(
+            geistSans.variable,
+            geistMono.variable,
+            "bg-white dark:bg-[#313338] text-black dark:text-white"
+          )}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            storageKey="discord-cua-bo-may-theme"
+          >
+            <ModalProvider />
+            {children}
           </ThemeProvider>
         </body>
       </html>

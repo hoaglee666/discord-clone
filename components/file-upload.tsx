@@ -46,7 +46,7 @@ export const FileUpload = ({
                 >
                     {value}
                 </a>
-                <button onClick={() => onChange()} className="absolute -top-2 -right-2 p-1 bg-rose-500 rounded-full shadow-sm">
+                <button onClick={() => onChange("")} className="absolute -top-2 -right-2 p-1 bg-rose-500 rounded-full shadow-sm">
                     <X className="h-4 w-4"/>    
                 </button>
             </div>

@@ -56,5 +56,5 @@ const MemberIdPage = async ({
         </div>
     );
 }
- 
+
 export default MemberIdPage;

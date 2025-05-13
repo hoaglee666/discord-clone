@@ -2,20 +2,18 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-
+import { GetServerSidePropsContext } from "next"; // Import this for type safety
 
 const InviteCodePage = async ({
     params
-}: {
-    params: { inviteCode: string };
-}) => {
+}: GetServerSidePropsContext["params"] & { params: { inviteCode: string } }) => {
     const profile = await currentProfile();
 
     if (!profile) {
         return <RedirectToSignIn />;
     }
 
-    if (!params.inviteCode) {
+    if (!params?.inviteCode) {
         return redirect("/");
     }
 
@@ -45,11 +43,11 @@ const InviteCodePage = async ({
                 }
             }
         }
-    })
+    });
     if (server) {
         return redirect(`/servers/${server.id}`);
     }
     return null;
-}
+};
 
 export default InviteCodePage;

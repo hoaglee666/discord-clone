@@ -1,19 +1,23 @@
+import React from "react";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { GetServerSidePropsContext } from "next"; // Import this for type safety
 
-const InviteCodePage = async ({
-    params
-}: GetServerSidePropsContext["params"] & { params: { inviteCode: string } }) => {
+interface InviteCodePageProps {
+    params: {
+        inviteCode: string;
+    };
+}
+
+export const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     const profile = await currentProfile();
 
     if (!profile) {
         return <RedirectToSignIn />;
     }
 
-    if (!params?.inviteCode) {
+    if (!params.inviteCode) {
         return redirect("/");
     }
 
@@ -22,10 +26,10 @@ const InviteCodePage = async ({
             inviteCode: params.inviteCode,
             members: {
                 some: {
-                    profileId: profile.id
-                }
-            }
-        }
+                    profileId: profile.id,
+                },
+            },
+        },
     });
 
     if (existingServer) {
@@ -34,19 +38,21 @@ const InviteCodePage = async ({
 
     const server = await db.server.update({
         where: {
-            inviteCode: params.inviteCode
+            inviteCode: params.inviteCode,
         },
         data: {
             members: {
                 create: {
                     profileId: profile.id,
-                }
-            }
-        }
+                },
+            },
+        },
     });
+
     if (server) {
         return redirect(`/servers/${server.id}`);
     }
+
     return null;
 };
 

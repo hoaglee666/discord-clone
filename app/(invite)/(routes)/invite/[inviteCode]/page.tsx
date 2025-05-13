@@ -3,13 +3,13 @@ import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-interface InviteCodePageProps {
+type InviteCodePageProps = {
     params: {
         inviteCode: string;
     };
-}
+};
 
-const InviteCodePage = async ({ params }: InviteCodePageProps) => {
+const InviteCodePage = async ({ params }: { params: { inviteCode: string } }) => {
     const profile = await currentProfile();
 
     if (!profile) {

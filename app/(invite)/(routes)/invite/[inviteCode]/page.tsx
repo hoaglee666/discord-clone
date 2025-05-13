@@ -1,16 +1,9 @@
-import React from "react";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-interface InviteCodePageProps {
-    params: {
-        inviteCode: string;
-    };
-}
-
-export const InviteCodePage = async ({ params }: InviteCodePageProps) => {
+const Page = async ({ params }: { params: { inviteCode: string } }) => {
     const profile = await currentProfile();
 
     if (!profile) {
@@ -56,4 +49,4 @@ export const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     return null;
 };
 
-export default InviteCodePage;
+export default Page;

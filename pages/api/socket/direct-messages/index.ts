@@ -68,18 +68,13 @@ export default async function handler(
             return res.status(404).json({message: "Member not found"});
         }
 
-        const messageData: any = {
-            content,
-            conversationId: conversationId as string,
-            memberId: member.id
-        }
-
-        if (fileUrl) {
-            messageData.fileUrl = fileUrl;
-        }
-
         const message = await db.directMessage.create({
-            data: messageData,
+            data: {
+                content,
+                fileUrl,
+                conversationId: conversation.id,
+                memberId: member.id,
+            },
             include: {
                 member: {
                     include: {

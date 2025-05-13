@@ -3,6 +3,11 @@ import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+export async function generateStaticParams() {
+    // If you want to pre-generate some invite codes, return them here
+    return [];
+}
+
 const Page = async ({ params }: { params: { inviteCode: string } }) => {
     const profile = await currentProfile();
 

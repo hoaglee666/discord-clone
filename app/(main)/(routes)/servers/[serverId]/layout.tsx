@@ -19,15 +19,16 @@ const ServerIdLayout = async ({ children, params }: ServerIdLayoutProps) => {
     return <RedirectToSignIn />;
   }
 
-  const server = await db.server.findUnique({
+  const serverId = await params.serverId; // No need to await
+  const server = await db.server.findUnique({      
     where: {
-      id: params.serverId,
+      id: serverId,
       members: {
         some: {
           profileId: profile.id,
-        },
-      },
-    },
+        }
+      }
+    }
   });
 
   if (!server) {
@@ -37,7 +38,8 @@ const ServerIdLayout = async ({ children, params }: ServerIdLayoutProps) => {
   return (
     <div className="flex h-full">
       <div className="flex-1 overflow-y-auto">
-        <ServerSidebar serverId={params.serverId} />
+        
+        <ServerSidebar serverId={serverId} />
       </div>
       <div className="flex-1">
         {children}

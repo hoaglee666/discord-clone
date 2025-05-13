@@ -24,15 +24,16 @@ const ChannelIdPage = async ({
     if (!profile) {
         return RedirectToSignIn;
     }
-    const channel = await db.channel.findUnique({
+    const channelId =  params.channelId; // No need to await
+    const channel = await db.channel.findUnique({  
         where: {
-            id: params.channelId,
+            id: channelId,
         }
     });
-
+    const serverId =  params.serverId; // No need to await
     const member = await db.member.findFirst({
         where: {
-            serverId: params.serverId,
+            serverId: serverId,
             profileId: profile.id
         }
     });

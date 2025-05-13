@@ -3,31 +3,35 @@ import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-export async function generateStaticParams() {
-    // If you want to pre-generate some invite codes, return them here
-    return [];
-}
+interface InviteCodePageProps {
+    params: {
+        inviteCode: string;
+    };
+};
 
-const Page = async ({ params }: { params: { inviteCode: string } }) => {
+const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     const profile = await currentProfile();
 
     if (!profile) {
         return <RedirectToSignIn />;
     }
 
-    if (!params.inviteCode) {
+    // Await params before accessing its properties
+    const resolvedParams = params;
+
+    if (!resolvedParams.inviteCode) {
         return redirect("/");
     }
 
     const existingServer = await db.server.findFirst({
         where: {
-            inviteCode: params.inviteCode,
+            inviteCode: resolvedParams.inviteCode,
             members: {
                 some: {
-                    profileId: profile.id,
-                },
-            },
-        },
+                    profileId: profile.id
+                }
+            }
+        }
     });
 
     if (existingServer) {
@@ -36,15 +40,15 @@ const Page = async ({ params }: { params: { inviteCode: string } }) => {
 
     const server = await db.server.update({
         where: {
-            inviteCode: params.inviteCode,
+            inviteCode: resolvedParams.inviteCode
         },
         data: {
             members: {
                 create: {
                     profileId: profile.id,
-                },
-            },
-        },
+                }
+            }
+        }
     });
 
     if (server) {
@@ -54,4 +58,4 @@ const Page = async ({ params }: { params: { inviteCode: string } }) => {
     return null;
 };
 
-export default Page;
+export default InviteCodePage;

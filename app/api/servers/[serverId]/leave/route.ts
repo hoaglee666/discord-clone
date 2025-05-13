@@ -2,10 +2,8 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
-    req: Request,
-    {params}: {params: {serverId: string}}
-) {
+export async function PATCH(req: Request, props: {params: Promise<{serverId: string}>}) {
+    const params = await props.params;
     try {
         const profile = await currentProfile();
 
@@ -42,5 +40,5 @@ export async function PATCH(
     } catch (err) {
         console.log("[SERVER_ID_LEAVE]", err);
         return new NextResponse("Internal Error", {status: 500});
-    }   
+    }
 }

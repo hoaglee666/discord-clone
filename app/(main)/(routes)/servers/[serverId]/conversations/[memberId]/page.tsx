@@ -9,19 +9,18 @@ import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface MemberIdPageProps {
-    params: {
+    params: Promise<{
         memberId: string;
         serverId: string;
-    },
-    searchParams: {
+    }>,
+    searchParams: Promise<{
         video?: boolean;
-    }
+    }>
 }
 
-const MemberIdPage = async ({
-    params,
-    searchParams
-}: MemberIdPageProps) => {
+const MemberIdPage = async (props: MemberIdPageProps) => {
+    const searchParams = await props.searchParams;
+    const params = await props.params;
     const profile = await currentProfile();
 
     if (!profile) {
@@ -43,7 +42,7 @@ const MemberIdPage = async ({
     }
 
     const conversation = await getOrCreateConversation(currentMember.id, params.memberId);
-    
+
     if (!conversation) {
         return redirect(`/servers/${params.serverId}`);
     }

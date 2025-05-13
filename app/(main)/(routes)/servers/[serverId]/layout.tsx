@@ -7,12 +7,18 @@ import { redirect } from "next/navigation";
 // ✅ Strongly type the props
 interface ServerIdLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     serverId: string;
-  };
+  }>;
 }
 
-const ServerIdLayout = async ({ children, params }: ServerIdLayoutProps) => {
+const ServerIdLayout = async (props: ServerIdLayoutProps) => {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const profile = await currentProfile();
 
   if (!profile) {

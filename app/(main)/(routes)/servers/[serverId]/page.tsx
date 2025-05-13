@@ -4,14 +4,13 @@ import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface ServerIdPageProps {
-  params: {
+  params: Promise<{
     serverId: string;
-  }
+  }>
 };
 
-const ServerIdPage = async ({
-  params
-}: ServerIdPageProps) => {
+const ServerIdPage = async (props: ServerIdPageProps) => {
+  const params = await props.params;
   const profile = await currentProfile();
 
   if (!profile) {
@@ -38,13 +37,13 @@ const ServerIdPage = async ({
       }
     }
   })
-  
+
   const initialChannel = server?.channels[0];
 
   if (initialChannel?.name !== "general") {
     return null;
   }
-  
+
   return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`);
 }
 

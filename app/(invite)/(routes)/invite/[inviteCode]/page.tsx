@@ -2,14 +2,11 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { GetServerSidePropsContext } from "next"; // Import this for type safety
 
-type InviteCodePageProps = {
-    params: {
-        inviteCode: string;
-    };
-};
-
-const InviteCodePage = async ({ params }: { params: { inviteCode: string } }) => {
+const InviteCodePage = async ({
+    params
+}: GetServerSidePropsContext["params"] & { params: { inviteCode: string } }) => {
     const profile = await currentProfile();
 
     if (!profile) {
@@ -25,10 +22,10 @@ const InviteCodePage = async ({ params }: { params: { inviteCode: string } }) =>
             inviteCode: params.inviteCode,
             members: {
                 some: {
-                    profileId: profile.id,
-                },
-            },
-        },
+                    profileId: profile.id
+                }
+            }
+        }
     });
 
     if (existingServer) {
@@ -37,21 +34,19 @@ const InviteCodePage = async ({ params }: { params: { inviteCode: string } }) =>
 
     const server = await db.server.update({
         where: {
-            inviteCode: params.inviteCode,
+            inviteCode: params.inviteCode
         },
         data: {
             members: {
                 create: {
                     profileId: profile.id,
-                },
-            },
-        },
+                }
+            }
+        }
     });
-
     if (server) {
         return redirect(`/servers/${server.id}`);
     }
-
     return null;
 };
 
